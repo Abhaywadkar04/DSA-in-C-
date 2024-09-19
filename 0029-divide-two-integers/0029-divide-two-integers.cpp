@@ -1,29 +1,34 @@
 class Solution {
 public:
     int divide(int dividend, int divisor) {
-        if(dividend == divisor)
-            return 1;
-        bool sign = true;
-        //taking care of sign
-        if(divisor < 0 && dividend >= 0) sign = false;
-        else if(divisor > 0 && dividend <= 0) sign = false;
-        long p = abs(dividend);
-        long q = abs(divisor);
-        long quotient = 0;
-        while(p >= q) {
-            int count = 0;
-            //divisor << count+1 means divisor * 2^(count+1)
-            while(p >= (q << (count+1)))
-                count++;
-            quotient += (1 << count); //2^count
-            p -= (q << count);
-        }
-        //handling overflows
-        if(quotient == (1 << 31) && sign)
-            return INT_MAX;
-        if(quotient == (1 << 31) && !sign)
-            return INT_MIN;
+        
+        if (dividend == divisor) return 1;
+        
+        if (dividend == INT_MIN && divisor == -1) return INT_MAX;
 
-        return sign? quotient : -quotient;
+        bool sign = true;
+        long ans = 0;
+        
+        if (divisor < 0 && dividend >= 0) sign = false;
+        if (divisor > 0 && dividend <= 0) sign = false;
+
+        long long absDividend = labs(dividend);
+        long long absDivisor = labs(divisor);
+
+        while (absDividend >= absDivisor) {
+            int count = 0;
+            
+            while (absDividend >= (absDivisor << (count + 1))) {
+                count++;
+            }
+
+            ans += (1 << count);
+            absDividend -= (absDivisor << count);
+        }
+
+        if (ans >= (1LL << 31) && sign == true) return INT_MAX;
+        if (ans >= (1LL << 31) && sign == false) return INT_MIN;
+
+        return sign ? ans : (-1 * ans);
     }
 };
