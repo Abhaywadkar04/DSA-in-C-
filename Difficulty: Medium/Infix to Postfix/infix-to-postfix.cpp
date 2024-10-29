@@ -5,55 +5,58 @@ using namespace std;
 
 
 // } Driver Code Ends
-
-
 class Solution {
-public:
+  public:
+  int priority(char op) {
+        if (op == '^') return 3;
+        if (op == '*' || op == '/') return 2;
+        if (op == '+' || op == '-') return 1;
+        return 0;
+    }
+       
     // Function to convert an infix expression to a postfix expression.
     string infixToPostfix(string s) {
-        string ans = "";
-        stack<char> op;
-
-        for (int i = 0; i < s.length(); i++) {
-            // If character is an operand, add it to the output
-            if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= '0' && s[i] <= '9')) {
-                ans += s[i];
-            } 
-            // If character is '(', push it to the stack
-            else if (s[i] == '(') {
-                op.push(s[i]);
-            } 
-            // If character is ')', pop and output from the stack until '(' is found
-            else if (s[i] == ')') {
-                while (!op.empty() && op.top() != '(') {
-                    ans += op.top();
-                    op.pop();
-                }
-                op.pop(); // Pop '('
-            } 
-            // If an operator is encountered
-            else {
-                while (!op.empty() && (
-                    ((s[i] == '+' || s[i] == '-') && (op.top() == '+' || op.top() == '-' || op.top() == '*' || op.top() == '/' || op.top() == '^')) ||
-                    ((s[i] == '*' || s[i] == '/') && (op.top() == '*' || op.top() == '/' || op.top() == '^')) ||
-                    (s[i] == '^' && op.top() == '^'))) {
-                    ans += op.top();
-                    op.pop();
-                }
-                op.push(s[i]); // Push current operator
+          
+        string ans="";
+        stack<char>stk;
+        
+        int i=0;
+        while(i<s.length()){
+            
+            if((s[i]>='A' && s[i]<='Z')||(s[i]>='a' && s[i]<='z')||(s[i]>='0' && s[i]<='9')){
+                ans +=s[i];
             }
+            else if(s[i]=='('){
+                stk.push(s[i]);
+            }
+            else if(s[i]==')'){
+                while(!stk.empty() && stk.top()!='('){
+                    ans +=stk.top();
+                    stk.pop();
+                }
+                stk.pop();
+            }
+            
+            else{
+                while(!stk.empty() && priority(s[i])<=priority(stk.top())){
+                    ans +=stk.top();
+                    stk.pop();
+                    
+                }
+                stk.push(s[i]);
+            }
+            i++;
         }
-
-        // Pop all remaining operators from the stack
-        while (!op.empty()) {
-            ans += op.top();
-            op.pop();
+        
+        while(!stk.empty()){
+            ans += stk.top();
+            stk.pop();
         }
-
+        
         return ans;
+        // Your code here
     }
 };
-
 
 
 //{ Driver Code Starts.
