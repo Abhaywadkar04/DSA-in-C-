@@ -6,7 +6,7 @@ public:
         int maxFreq = 0;
         int maxLength = 0;
         int n = s.length();
-
+        
         for (int r = 0; r < n; r++) {
             map[s[r]]++;
             
@@ -22,4 +22,10 @@ public:
         
         return maxLength;
     }
+
+    
 };
+
+
+
+
