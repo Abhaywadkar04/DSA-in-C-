@@ -7,7 +7,8 @@ public:
             if(buy>prices[i]){
                 buy=prices[i];
             }
-            profit= max(profit,buy-prices[i]);
+          profit = max(profit, prices[i] - buy);
+;
         }
         return profit;
 
